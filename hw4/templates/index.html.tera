@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie-edge">
+    <title>Sample form</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link rel="stylesheet" href=/style.css>
+</head>
+
+<body>
+    <form class="form" action="/" method="post">
+        <div class="form-row">
+            <div class="form-cell">
+                <label for="account.name">Name</label>
+                <input required autocomplete placeholder="Your name" type="text" id="account.name" name="account.name" value="" />
+            </div>
+            <div class="form-cell">
+                <label for="account.email">Email Address</label>
+                <input autocomplete type="email" id="account.email" name="account.email" value="" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-cell">
+                <label for="account.password.first">Password</label>
+                <input required type="password" id="account.password.first" name="account.password.first" value="" />
+            </div>
+            <div class="form-cell">
+                <label for="account.password.second">Confirm password</label>
+                <input type="password" id="account.password.second" name="account.password.second" value="" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-cell">
+                <label for="article.title">Article title</label>
+                <input type="text" id="article.title" name="article.title" value="" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-cell">
+                <label for="article.date">Publish Date</label>
+                <input type="date" name="article.date" id="article.date" value='' />
+            </div>
+            <div class="form-cell">
+                <label for="article.rights">Rights</label>
+                <select name="article.rights" id="article.rights">
+                    <option value="Public">Public</option>
+                    <option value="Reserved">Reserved</option>
+                    <option value="Exclusive">Exclusive</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-cell">
+                <label>Categories</label>
+                <label>
+                    <input type="checkbox" name="article.category" value=Biology>
+                    Biology
+                </label>
+                <label>
+                    <input type="checkbox" name="article.category" value=Chemistry>
+                    Chemistry
+                </label>
+                <label>
+                    <input type="checkbox" name="article.category" value=Physics>
+                    Physics
+                </label>
+                <label>
+                    <input type="checkbox" name="article.category" value=CS>
+                    CS
+                </label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-cell">
+                <label for="article.content">Content</label>
+                <textarea required placeholder="Content of your article..." name="article.content" id="article.content" rows="8"
+                    cols="40"></textarea>
+
+                <label for="article.file">File to upload (PDF, max 1MB)</label>
+                <input type="file" name="article.file" id="article.file" value='' />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-cell">
+                <label>Research Center</label>
+                <label>
+                    <input required type="radio" name="company.city" value=Msc />
+                    Moscow</label>
+                <label>
+                    <input type="radio" name="company.city" value=Spb />
+                    Saint-Petersburg</label>
+                <label>
+                    <input type="radio" name="company.city" value=NN />
+                    Nizhny Novgorod</label>
+            </div>
+            <div class="form-cell">
+                <label for="company.range">Range</label>
+                <input type="range" id="company.range" name="company.range" value="" />
+            </div>
+            <div class="form-cell">
+                <label for="company.color">Color</label>
+                <input type="color" id="company.color" name="company.color" value="#4834d4" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-cell">
+              <input type="submit" value="Submit" />
+            </div>
+        </div>
+        <input type="hidden" name="post_id" value="34657" />
+
+    </form>
+</body>
+
+</html>

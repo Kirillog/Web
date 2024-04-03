@@ -1,0 +1,56 @@
+:root {
+    --co-textfld-bg: #fff;
+    --co-textfld-border: #ccc;
+    --co-btn-active-bg: #333;
+    --co-btn-focus-bg: #333;
+}
+
+:root {
+    --padding-inputs: 0.75em;
+    --margin-label: 0.5em;
+    --margin-form-gap: 1.5em;
+    --width-input-border: 2px;
+    --radius-inputs: 0.25em;
+}
+
+select,
+textarea,
+input[type=date],
+input[type=email],
+input[type=password],
+input[type=text],
+input[type=submit],
+input::file-selector-button {
+    border: var(--width-input-border) solid var(--co-textfld-border);
+    padding: var(--padding-inputs);
+    border-radius: var(--radius-inputs);
+    background-color: var(--co-textfld-bg);
+}
+
+textarea::placeholder {
+    color: #0bf
+}
+
+.form-row {
+    gap: var(--margin-form-gap);
+}
+
+.form-row+.form-row {
+    margin-top: var(--margin-form-gap);
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+label {
+    display: block;
+}
+
+label+label,
+label+input,
+label+select,
+label+textarea {
+    margin-top: var(--margin-label);
+}

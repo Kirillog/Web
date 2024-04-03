@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie-edge">
+    <title>Sample form</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link rel="stylesheet" href=/style.css>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Success!</h1>
+
+        <h3>Submission Data</h3>
+
+        <ul>
+            {% for pair in values %}
+            <li><strong>{{ pair.0 }}</strong> - {{ pair.1 }}</li>
+            {% endfor %}
+        </ul>
+
+        <a href="/">&lt; Submit Another</a>
+</body>
+
+</html>
