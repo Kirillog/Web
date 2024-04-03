@@ -1,0 +1,51 @@
+body {
+    font-family: "Trirong", serif;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 20vw 20vw 20vw;
+}
+
+.scene {
+    height: 20vmin;
+    width: 20vmin;
+    perspective: 60vw;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+}
+
+.card__face {
+    position: absolute;
+    border-radius: 25px;
+    background-color: rgb(207 232 220);
+    border: 2px solid rgb(79 185 227);
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    backface-visibility: hidden;
+}
+
+.card__face--front {
+    background: yellow;
+}
+
+.card__face--back {
+    background: blue;
+    transform: rotateY(180deg);
+}
+
+.card:hover {
+    transform: rotateY(180deg);
+}
+
+.card:active {
+    transform: rotateY(360deg);
+}
