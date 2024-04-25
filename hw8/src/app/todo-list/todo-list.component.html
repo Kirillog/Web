@@ -1,0 +1,27 @@
+<div class="container py-6">
+    <div class="flex flex-col">
+        <div class="flex justify-between items-center">
+            <h2 class="font-bold text-xl">Manage Todos for {{today | date:'fullDate'}}</h2>
+            <button mat-flat-button color="primary" [routerLink]="['/add']">
+                Add Todo
+            </button>
+        </div>
+
+        <div class="mt-4 inline-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" [class]="{'btn-primary': filterByStatus === ''}"
+                (click)="onFilterByStatus('')">ALL</button>
+            <button class="btn btn-sm btn-outline-primary" [class]="{'btn-primary': filterByStatus === 'OPEN'}"
+                (click)="onFilterByStatus('OPEN')">OPEN</button>
+            <button class="btn btn-sm btn-outline-primary" [class]="{'btn-primary': filterByStatus === 'PROGRESS'}"
+                (click)="onFilterByStatus('PROGRESS')">PROGRESS</button>
+            <button class="btn btn-sm btn-outline-primary" [class]="{'btn-primary': filterByStatus === 'DONE'}"
+                (click)="onFilterByStatus('DONE')">DONE</button>
+        </div>
+
+        <mat-list class="mt-3 bg-white shadow">
+            @for (item of this.itemService.todos; track $index) {
+            <app-todo-card [routerLink]="['/items', item.id]" [type]="item.status" [todo]="item"></app-todo-card>
+            }
+        </mat-list>
+    </div>
+</div>

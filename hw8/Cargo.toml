@@ -1,0 +1,4 @@
+[workspace]
+
+members = ["src/serv"]
+workspace.resolver = "2"

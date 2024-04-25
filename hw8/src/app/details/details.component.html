@@ -1,0 +1,44 @@
+<div class="container py-6">
+    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" autocomplete="off">
+        <mat-form-field class="form-group w-full">
+            <mat-label for="title">Title</mat-label>
+            <input matInput id="title" placeholder="Title" class="form-control" [formControl]="title">
+            @if (todoForm.get('title')?.hasError('required') && todoForm.get('title')?.touched) {
+            <mat-error>Title is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="form-group w-full">
+            <mat-label for="description">Description</mat-label>
+
+            <textarea name="" rows="10" matInput placeholder="Description" class="form-control"
+                [formControl]="description"></textarea>
+            @if (todoForm.get('description')?.hasError('required') && todoForm.get('description')?.touched) {
+            <mat-error>Description is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="form-group w-full">
+            <mat-label for="status">Status</mat-label>
+            <select class="form-control" matNativeControl required [formControl]="status">Status
+                @for (item of todoStatus; track item) {
+                <option [value]="item">{{item}}</option>
+                }
+            </select>
+            @if (todoForm.get('status')?.hasError('required') && todoForm.get('status')?.touched) {
+            <mat-error>Status is required.</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="form-group w-full">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [formControl]="date" [matDatepicker]="picker">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (date.hasError('required')) {
+            <mat-error>Date is required.</mat-error>
+            }
+        </mat-form-field>
+        <div class="flex gap-2">
+            <button mat-flat-button color="primary" type="submit">Submit</button>
+            <button mat-flat-button type="button" [routerLink]="['/todolist']">Cancel</button>
+        </div>
+    </form>
+</div>
