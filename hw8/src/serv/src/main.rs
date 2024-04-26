@@ -1,24 +1,19 @@
+use rocket::http::Status;
 use std::sync::Mutex;
 
 use lazy_static::lazy_static;
 use rocket::figment::value::Map;
-use rocket::response::{self, content, Responder};
+use rocket::response::Responder;
 use rocket::serde::json::{to_string, Json};
 use rocket::serde::{Deserialize, Serialize};
-use rocket::time::Date;
-use rocket::FromFormField;
 use rocket::{form::FromForm, get, launch, post, routes};
+use rocket::{options, put, FromFormField};
 lazy_static! {
     static ref TODO_LIST: Mutex<Map<usize, TodoItem>> = Mutex::new(Map::new());
 }
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
-
 #[derive(FromForm)]
-struct Status<'v> {
+struct StatusC<'v> {
     status: &'v str,
 }
 
@@ -26,8 +21,8 @@ struct Status<'v> {
 #[response(status = 200, content_type = "json")]
 struct OkJson(String);
 
-#[get("/?all&<status>")]
-fn get_all<'v>(status: Status<'v>) -> OkJson {
+#[get("/?all&<status>", rank=3)]
+fn get_all<'v>(status: StatusC<'v>) -> OkJson {
     let guard = TODO_LIST.lock().unwrap();
     let typ = TodoType::from_str(status.status);
     let value: Vec<IdTodoItem> = guard
@@ -43,6 +38,30 @@ fn get_all<'v>(status: Status<'v>) -> OkJson {
         .collect();
     OkJson(to_string(&value).unwrap())
 }
+
+#[derive(FromForm)]
+struct Title<'v> {
+    title: &'v str,
+}
+
+#[get("/?filter&<title>", rank=2)]
+fn get_all_by_name<'v>(title: Title<'v>) -> OkJson {
+    let guard = TODO_LIST.lock().unwrap();
+    let title = title.title;
+    let value: Vec<IdTodoItem> = guard
+        .iter()
+        .filter(|(_, v)| v.title == title)
+        .map(|(&k, v)| IdTodoItem {
+            id: k,
+            title: v.title.clone(),
+            description: v.description.clone(),
+            status: v.status.clone(),
+            date: v.date.clone(),
+        })
+        .collect();
+    OkJson(to_string(&value).unwrap())
+}
+
 #[derive(Serialize, Deserialize, Clone, PartialEq, FromFormField)]
 #[serde(crate = "rocket::serde")]
 enum TodoType {
@@ -105,7 +124,12 @@ fn add_item(item: Json<TodoItem>) -> OkJson {
     OkJson(to_string(&item).unwrap())
 }
 
-#[post("/<id>", data = "<item>")]
+#[options("/add")]
+fn add_item_opt() -> Status {
+    return Status::Ok;
+}
+
+#[put("/<id>", data = "<item>")]
 fn update_item<'a>(id: usize, item: Json<IdTodoItem>) -> OkJson {
     let item_copy = item.clone().0;
     let mut guard = TODO_LIST.lock().unwrap();
@@ -119,6 +143,11 @@ fn update_item<'a>(id: usize, item: Json<IdTodoItem>) -> OkJson {
         },
     );
     OkJson(to_string(&item_copy).unwrap())
+}
+
+#[options("/<id>")]
+fn update_item_opt<'a>(id: usize) -> Status {
+    Status::Ok
 }
 
 use rocket::fairing::{Fairing, Info, Kind};
@@ -149,7 +178,15 @@ impl Fairing for Cors {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build()
-        .attach(Cors)
-        .mount("/", routes![index, get_all, update_item, add_item])
+    rocket::build().attach(Cors).mount(
+        "/",
+        routes![
+            get_all,
+            update_item,
+            add_item,
+            update_item_opt,
+            add_item_opt,
+            get_all_by_name
+        ],
+    )
 }

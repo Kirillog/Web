@@ -17,12 +17,21 @@ export class TodoService {
     return await data.json();
   }
 
+  async getTodoFilteredByName(title: string): Promise<ITodo[]> {
+    let request = `${apiurl}?filter&title.title=${title}`;
+    console.log(
+      "request: ", title
+    )
+    const data = await fetch(request);
+    return await data.json();
+  }
+
   async addTodo(data: ITodo): Promise<ITodo> {
     console.log("trying to add...: ", data);
     const resp = await fetch(`${apiurl}/add`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8'
       },
       body: JSON.stringify(data)
     })
@@ -30,10 +39,11 @@ export class TodoService {
   }
 
   async updateTodo(id: number, data: ITodo): Promise<ITodo> {
+    console.log("data: ", data)
     const resp = await fetch(`${apiurl}/${id}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8'
       },
       body: JSON.stringify(data)
     })

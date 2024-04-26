@@ -6,6 +6,10 @@
                 Add Todo
             </button>
         </div>
+        <div class="flex justify-between">
+            <input class="w-full pl-5 pr-5" matInput type="text" placeholder="Filter by title" #filter>
+            <button mat-flat-button color="primary" type="button" (click)="filterResults(filter.value)">Search</button>
+        </div>
 
         <div class="mt-4 inline-flex gap-2">
             <button class="btn btn-sm btn-outline-primary" [class]="{'btn-primary': filterByStatus === ''}"

@@ -32,18 +32,21 @@ export class TodoListComponent implements OnInit {
         this.itemService.todos = response;
         console.log("Todos: ", this.itemService.todos)
       },
-    ).catch((e) => {
-      if (typeof e === "string") {
-        alert(e.toUpperCase())
-      } else if (e instanceof Error) {
-        alert(e.message)
-      }
-    });
+    );
   }
 
   onFilterByStatus(status: string) {
     this.filterByStatus = status;
     this.getAllTodos();
+  }
+
+  filterResults(title: string) {
+    this.todoService.getTodoFilteredByName(title).then(
+      (response) => {
+        this.itemService.todos = response;
+        console.log("Todos: ", this.itemService.todos)
+      },
+    );
   }
 }
 

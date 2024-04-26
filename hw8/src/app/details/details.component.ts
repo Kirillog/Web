@@ -73,20 +73,14 @@ export class DetailsComponent {
     if (this.todoForm.valid) {
       if (!Number.isNaN(this.todoId)) {
         this.todoService
-          .updateTodo(this.todoId!, this.todoForm.value)
+          .updateTodo(this.todoId!, { id: this.todoId!, ...this.todoForm.value })
           .then((response) => {
-            this.todoList.getAllTodos();
+            this.itemService.todos[this.todoId!] = response;
           },
-          ).catch((e) => {
-            if (typeof e === "string") {
-              alert(e.toUpperCase())
-            } else if (e instanceof Error) {
-              alert(e.message)
-            }
-          });
+          );
       } else {
         this.todoService.addTodo(this.todoForm.value).then((response) => {
-          this.todoList.getAllTodos();
+          this.itemService.todos[this.todoId!] = response;
         },
         );
       }
