@@ -1,4 +1,3 @@
-import React, { ChangeEvent, useState } from "react";
 import { Image } from 'antd';
 
 import { ImageT, Message as MessageT } from "./model";

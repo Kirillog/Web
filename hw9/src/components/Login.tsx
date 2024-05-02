@@ -22,7 +22,6 @@ export default function Login() {
                 <Title>Login</Title>
 
                 <Form onFinish={onFinish}
-                    // className="form"
                     autoComplete="off"
                     labelCol={{ span: 8 }}>
                     <Form.Item<User>

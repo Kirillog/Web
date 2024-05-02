@@ -55,21 +55,19 @@ const Chat = () => {
         setMessageStr("");
     };
 
+
+
     useEffect(() => {
         socket.on("new message", (message: MessageT) => {
             console.log("new message: ", message)
             setMessages((_state) => [..._state, message]);
         });
-    }, []);
 
-    useEffect(() => {
         socket.on("user joined", (event: UserEvent) => {
             console.log("joined user: ", event)
             setUsers(event.numUsers);
         });
-    }, []);
 
-    useEffect(() => {
         socket.on("new image", (name: { username: string }, image: ArrayBuffer) => {
             console.log("new image: ", image, name);
             const reader = new FileReader();
@@ -82,6 +80,7 @@ const Chat = () => {
         socket.on("user left", (event: UserEvent) => {
             setUsers(event.numUsers);
         });
+
         socket.on('reconnect', () => {
             socket.emit("connection", { name: username, room });
         });
@@ -94,7 +93,7 @@ const Chat = () => {
 
     const changeRoom = () => {
         socket.emit("change room", username);
-        navigate("/");
+        navigate("/logout");
     };
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => setMessageStr(event.target.value);
@@ -148,7 +147,6 @@ const Chat = () => {
                 >
                     <Button type="primary" icon={<PaperClipOutlined />}></Button>
                 </Popover>
-                {/* <Form.Item<FieldType>> */}
                 <Input
                     type="text"
                     className="messageInput"
@@ -158,7 +156,6 @@ const Chat = () => {
                     onChange={onChange}
                     required
                 />
-                {/* </Form.Item> */}
 
 
                 <Button type="primary" htmlType="submit" icon={<SendOutlined />} />
