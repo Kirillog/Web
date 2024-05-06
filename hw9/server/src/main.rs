@@ -11,7 +11,7 @@ use socketioxide::{
 };
 
 use tower::ServiceBuilder;
-use tower_http::{cors::CorsLayer, services::ServeDir};
+use tower_http::cors::CorsLayer;
 use tracing::info;
 use tracing_subscriber::FmtSubscriber;
 
@@ -60,6 +60,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let (layer, io) = SocketIo::builder().with_state(shared_state).build_layer();
 
     io.ns("/", |s: SocketRef| {
+        info!("Get request: {:?}", s);
         s.on("message", |s: SocketRef, Data::<String>(text)| {
             info!("Get message: {}", text);
 
@@ -74,9 +75,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         s.on(
             "image",
             |socket: SocketRef, Data::<Value>(data), Bin(bin)| {
-                info!("Get binary for: {}, {:?}", data, bin);
+                info!("Get binary for: {}", data);
                 if let Some(user) = socket.extensions.get::<User>() {
-                    // This will send the binary payload received to all clients in this namespace with the test message
                     socket
                         .within(user.room.clone())
                         .bin(bin)
@@ -128,20 +128,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
         );
 
-        // s.on("typing", |s: SocketRef| {
-        //     let username = s.extensions.get::<Username>().unwrap().clone();
-        //     s.broadcast()
-        //         .emit("typing", Res::Username { username })
-        //         .ok();
-        // });
-
-        // s.on("stop typing", |s: SocketRef| {
-        //     let username = s.extensions.get::<Username>().unwrap().clone();
-        //     s.broadcast()
-        //         .emit("stop typing", Res::Username { username })
-        //         .ok();
-        // });
-
         s.on_disconnect(
             |s: SocketRef, app_state: State<Arc<Mutex<RoomUserCount>>>| {
                 if let Some(user) = s.extensions.get::<User>() {
@@ -159,16 +145,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
     let app = axum::Router::new()
-        .nest_service("/", ServeDir::new("dist"))
         .layer(
             ServiceBuilder::new()
                 .layer(CorsLayer::permissive()) // Enable CORS policy
                 .layer(layer),
         );
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:1234")
-        .await
-        .unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:5000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 
     Ok(())
