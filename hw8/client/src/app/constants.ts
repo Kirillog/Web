@@ -1,4 +1,4 @@
-export const apiurl = 'http://localhost:8001';
+export const apiurl = '/api/';
 
 export const imageUrls = [
     'https://cdn-icons-png.flaticon.com/512/2911/2911440.png',

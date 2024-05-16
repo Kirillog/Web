@@ -1,4 +1,4 @@
 [workspace]
 
-members = ["src/serv"]
+members = ["server"]
 workspace.resolver = "2"

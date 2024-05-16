@@ -179,7 +179,7 @@ impl Fairing for Cors {
 #[launch]
 fn rocket() -> _ {
     rocket::build().attach(Cors).mount(
-        "/",
+        "/api",
         routes![
             get_all,
             update_item,

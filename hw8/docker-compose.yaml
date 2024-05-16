@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+    container_name: backend
+    stop_grace_period: 1s
+    image: kirillog/todo-app:server
+    ports:
+      - "5000:5000"
+
+  client:
+    build:
+      context: ./client
+    container_name: frontend
+    image: kirillog/todo-app:client
+    depends_on:
+      - server
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    image: kirillog/todo-app:nginx
+    depends_on:
+      - client
