@@ -1,4 +1,3 @@
-FROM nginx:1-alpine
+FROM jonasal/nginx-certbot:latest
 
-COPY ./certs /etc/nginx/certs
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf /etc/nginx/user_conf.d/chat_app.conf

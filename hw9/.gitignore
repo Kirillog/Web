@@ -1,4 +1,3 @@
-
 # dependencies
 /client/node_modules
 /client/build
@@ -8,3 +7,6 @@ target
 
 # log
 *.log
+
+# remote
+remote-code

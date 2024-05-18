@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   server:
     build:
@@ -21,7 +19,16 @@ services:
       context: ./nginx
     container_name: nginx
     image: kirillog/chat-app:nginx
+    restart: unless-stopped
+    environment:
+      - CERTBOT_EMAIL=kirill.mitkin.03@gmail.com
     ports:
-      - "443:443"
+      - 80:80
+      - 443:443
+    volumes:
+      - nginx_secrets:/etc/letsencrypt
     depends_on:
       - client
+
+volumes:
+  nginx_secrets:
